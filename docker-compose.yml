@@ -1,0 +1,124 @@
+services:
+     UPPER:
+       image: mod-nso-prod:$VER
+       container_name: nso_upper
+       profiles:
+             - prod
+       environment:
+             - EXTRA_ARGS=--with-package-reload
+             - ADMIN_USERNAME=admin
+             - ADMIN_PASSWORD=admin
+       networks:
+           NSO-net:
+             ipv4_address: 10.0.0.2
+       ports:
+             - "2023:2024"
+             - "8889:8888"
+       volumes:
+             - type: bind
+               source: './NSO-vol/UPPER'
+               target: '/nso'
+             - type: bind
+               source: './NSO-log-vols/UPPER'
+               target: '/log'
+       healthcheck:
+            test: ncs_cmd -c "wait-start 2"
+            interval: 5s
+            retries: 5
+            start_period: 10s
+            timeout: 10s
+
+     LOWER-1:
+       image: mod-nso-prod:$VER
+       container_name: nso_lower_1
+       profiles:
+             - prod
+       environment:
+             - EXTRA_ARGS=--with-package-reload
+             - ADMIN_USERNAME=admin
+             - ADMIN_PASSWORD=admin
+       networks:
+           NSO-net:
+             ipv4_address: 10.0.0.3
+
+       ports:
+             - "2025:2024"
+             - "8887:8888"
+             
+       volumes:
+             - type: bind
+               source: './NSO-vol/LOWER_1'
+               target: '/nso'
+             - type: bind
+               source: './NSO-log-vols/LOWER_1'
+               target: '/log'
+       healthcheck:
+            test: ncs_cmd -c "wait-start 2"
+            interval: 5s
+            retries: 5
+            start_period: 20s
+            timeout: 20s
+
+     LOWER-2:
+        image: mod-nso-prod:$VER
+        container_name: nso_lower_2
+        profiles:
+              - prod
+        environment:
+              - EXTRA_ARGS=--with-package-reload
+              - ADMIN_USERNAME=admin
+              - ADMIN_PASSWORD=admin
+        networks:
+            NSO-net:
+              ipv4_address: 10.0.0.4
+
+        ports:
+              - "2027:2024"
+              - "8886:8888"
+        volumes:
+              - type: bind
+                source: './NSO-vol/LOWER_2'
+                target: '/nso'
+              - type: bind
+                source: './NSO-log-vols/LOWER_2'
+                target: '/log'
+        healthcheck:
+              test: ncs_cmd -c "wait-start 2"
+              interval: 5s
+              retries: 5
+              start_period: 20s
+              timeout: 20s
+
+     BUILD-NSO-PKGS:
+            image: mod-nso-dev:$VER
+            container_name: nso-dev
+            network_mode: none
+            profiles:
+                - dev
+            volumes:
+                - type: bind
+                  source: './NSO-vol/UPPER/run/packages'
+                  target: '/upper_packages'
+                - type: bind
+                  source: './NSO-log-vols/UPPER'
+                  target: '/log_upper'
+                - type: bind
+                  source: './NSO-vol/LOWER_1/run/packages'
+                  target: '/lower_1_packages'
+                - type: bind
+                  source: './NSO-log-vols/LOWER_1'
+                  target: '/log_lower1'
+                - type: bind
+                  source: './NSO-vol/LOWER_2/run/packages'
+                  target: '/lower_2_packages'
+                - type: bind
+                  source: './NSO-log-vols/LOWER_2'
+                  target: '/log_lower2'
+
+networks:
+  NSO-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/16
+          gateway: 10.0.0.1

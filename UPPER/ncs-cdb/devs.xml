@@ -1,0 +1,38 @@
+<config xmlns="http://tail-f.com/ns/config/1.0">
+  <cluster xmlns="http://tail-f.com/ns/ncs">
+    <authgroup>
+      <name>default</name>
+      <default-map>
+        <same-user/>
+        <same-pass/>
+      </default-map>
+      <umap>
+        <local-user>admin</local-user>
+        <same-user/>
+        <remote-password>admin</remote-password>
+      </umap>
+      <umap>
+        <local-user>oper</local-user>
+        <same-user/>
+        <remote-password>oper</remote-password>
+      </umap>
+    </authgroup>
+  </cluster>
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <authgroups>
+      <group>
+        <name>default</name>
+        <umap>
+          <local-user>admin</local-user>
+          <remote-name>admin</remote-name>
+          <remote-password>admin</remote-password>
+        </umap>
+        <umap>
+          <local-user>oper</local-user>
+          <remote-name>oper</remote-name>
+          <remote-password>oper</remote-password>
+        </umap>
+      </group>
+    </authgroups>
+  </devices>
+</config>
