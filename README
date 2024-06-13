@@ -1,6 +1,6 @@
 # Implementing Layered Service Architecture with NSO Official Docker Image (Single Version)
 
-![alt Architecture](./LSA.png)
+![alt Architecture](LSA.png)
 
 
 ## Basic Architecture:
@@ -77,11 +77,11 @@ make cli-c_nso_lower_2 (for juniper terminal: cli-j_nso_lower_2)
 
 ##### While in NSO cli from each terminal, Check the status of packages on each Node:
 
-![alt status_check](./package_status.png)
+![alt status_check](package_status.png)
 
 ##### Check into all nodes, if the status of nodes' connection and devices is up:
 
-![alt status_check](./cluster_devices.png)
+![alt status_check](cluster_devices.png)
 
 You can see that the connection between upper and lower nodes is up, also the communication between lower nodes and their devices is also setup.
 
