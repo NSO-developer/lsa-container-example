@@ -75,12 +75,15 @@ make cli-c_nso_lower_2 (for juniper terminal: cli-j_nso_lower_2)
 
 
 
-##### While in NSO cli from each terminal, Check the status of packages on each Node:
+##### While in NSO cli from each terminal, Check the status of packages on each Node by entering command ```show packages package oper-status```:
 
 ![alt status_check](package_status.png)
 
-##### Check into all nodes, if the status of nodes' connection and devices is up:
-
+##### Check into all nodes, if the status of nodes' connection and devices is up using following commands (J-cli style) correspondingly:
+```
+show cluster connection -> on upper node terminal.
+request devices connect -> on terminals of both lower nodes.
+```
 ![alt status_check](cluster_devices.png)
 
 You can see that the connection between upper and lower nodes is up, also the communication between lower nodes and their devices is also setup.
@@ -92,7 +95,8 @@ This completes the environment setup and verification.
 
 Now we will check how service can be deployed layer wise from upper through the lower nodes:
 
-Get into the upper node terminal and supply the following command to deploy service:
+Get into the upper node terminal, while in configuration mode by typing ```config```.
+Supply the command ```set cfs-vlan v1 a-router ex0 z-router fx0 iface``` to deploy the service:
 ```
 admin@upper-nso% set cfs-vlan v1 a-router ex0 z-router fx0 iface eth3 unit 3 vid 77
 [ok][2024-06-13 19:42:33]
@@ -226,6 +230,8 @@ Commit performed by admin via ssh using netconf.
 ```
 
 ###### Check the forward diff-set of the service on upper node:
+
+Go back into the Operational mode with ```exit``` on upper node terminal and supply the command ```request cfs-vlan v1 get-modifications```
 
 ```
 admin@upper-nso% request cfs-vlan v1 get-modifications
