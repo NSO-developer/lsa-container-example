@@ -51,7 +51,7 @@ export VER=6.2.3 ; docker-compose up UPPER LOWER-1 LOWER-2 BUILD-NSO-PKGS -d
 ```
 This will attempt to start all containers, run startup scripts ```init.sh``` on each container. Additionally, On lower-nso nodes, it will create set of 3 devices for each node using **router** NED, starts them.
 
-Now athat environment is setup completed, We will verify if the environment has been setup successfully.
+Now that environment is setup completed, We will verify if the environment has been setup successfully.
 
 ##### List the running containers using:
 
