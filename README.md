@@ -21,7 +21,7 @@ Ensure that you are running docker engine and associated service.
 
 Clone the repo and enter into the repo folder on your system.
 
-In the folder images, store the NSO docker images of both production and development types available from Cisco download center of your desired NSO version. Please note that production and development images should be of same NSO version.
+In the directory ***images***, store the NSO docker images of both production and development types available from Cisco software download center of your desired NSO version. Please note that production and development images should be of same NSO version. The ***router*** package supplied in the package-store is available from ```NSO-installation-directory/examples.ncs/getting-started/developing-with-ncs/packages``` and ***cfs-vlan and rfs-vlan*** packages are available in ```NSO-installation-directory/examples.ncs/getting-started/developing-with-ncs/22-lsa-single-version-deployment/package-store```.
 
 Run ```make build [VER=<NSO version> (6.2.3 is default)] [ARCH=<your CPU architecture> (x86_64 is default)]```, you will see following output generated and this takes a while to process:
 
@@ -36,7 +36,11 @@ Sending build context to Docker daemon  1.389GB
 Step 1/6 : ARG  type ver
      ..... truncated for brevity
 ```
-The build target starts with loading docker images, creates containers for each node, builds file structure, using dev container creates packages **router** and **lsa-ned** for production nodes, compiles them. It also copies required configurations for nodes and devices during CDB booting.
+The build target starts with loading docker images, creates containers for each node, builds file structure, using dev container and rfs-vlan packages in package-store directory, creates NED package **lsa-netconf-ned** for production nodes to setup LSA network, using the command:
+```ncs-make-package --no-netsim --no-java --no-python --lsa-netconf-ned /nso/UPPER/packages/rfs-vlan/src/yang --dest /nso/UPPER/packages/rfs-vlan-ned --build rfs-vlan-ned ```, finally compiles all the packages.
+
+It also copies required configurations for nodes and devices during CDB booting.
+
 
 After it's done, run ```make start```
 ```
@@ -75,7 +79,7 @@ make cli-c_nso_lower_2 (for juniper terminal: cli-j_nso_lower_2)
 
 
 
-##### While in NSO cli from each terminal, Check the status of packages on each Node by entering command ```show packages package oper-status```:
+##### While in NSO CLI from each terminal in Operational mode, Check the status of packages on each Node by entering command ```show packages package oper-status```:
 
 ![alt status_check](package_status.png)
 
