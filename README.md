@@ -2,7 +2,7 @@
 
 ![alt Architecture](LSA.png)
 
-
+**YouTube Tutorial:** [LSA with Containerized NSO](https://youtu.be/5yR-2Mmrecs?si=8EfJVaXQmptHZbFe)
 ## Basic Architecture:
 
 Containerized NSO workflow can be divided into two part on an abstract, i.e production and development.
